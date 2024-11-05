@@ -1,0 +1,42 @@
+name: Dependabot Auto Merge
+
+on: pull_request_target
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    # Checking the actor will prevent your Action run failing on non-Dependabot
+    # PRs but also ensures that it only does work for Dependabot PRs.
+    if: ${{ github.actor == 'dependabot[bot]' }} 
+    steps: 
+    # This first step will fail if there's no metadata and so the approval
+    # will not occur.
+    - name: Dependabot metadata
+      id: dependabot-metadata
+      uses: dependabot/fetch-metadata@v1.1.1
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+    # CUSTOM STEPS START -----------------------------------------------------
+
+      
+
+    # CUSTOM STEPS END -------------------------------------------------------
+
+    - name: Approve a PR
+      run: gh pr review --approve "$PR_URL"
+      env:
+        PR_URL: ${{ github.event.pull_request.html_url }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Enable auto-merge for Dependabot PRs
+      # This step will only merge the PR if the update type is not a major version update
+      if: ${{ steps.dependabot-metadata.outputs.update-type != 'version-update:semver-major' }}
+      run: gh pr merge --auto --merge "$PR_URL"
+      env:
+        PR_URL: ${{ github.event.pull_request.html_url }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
