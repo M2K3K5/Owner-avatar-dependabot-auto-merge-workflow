@@ -11,7 +11,7 @@ This repository is designed for users who do not want to set up branch protectio
 
 1. **Copy the GitHub Actions Workflow**: Copy the [auto-merge.yml](.github/workflows/auto-merge.yml) workflow file to your repository. This file sets up the GitHub Actions to automatically merge Dependabot pull requests. Refer to the guide section below for adding custom pipeline code.
 2. **Edit the Dependabot Configuration**: Configure Dependabot to check for updates in your project dependencies. See the [dependabot.yml](.github/dependabot.yml) file for an example configuration. Refer to the guide section below for setting up the package ecosystem.
-
+3. **Allow GitHub Actions to Approve Pull Requests**: In your repository settings, navigate to `Settings` > `Actions` > `General` and enable the option `Allow GitHub Actions to create and approve pull requests`.
 ## Guide
 
 ### Setting Up Package Ecosystem
